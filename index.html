@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seeeeal</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script>
+      document.documentElement.className = "js";
+      var supportsCssVars = function () {
+        var e,
+          t = document.createElement("style");
+        return (
+          (t.innerHTML = "root: { --tmp-var: bold; }"),
+          document.head.appendChild(t),
+          (e = !!(
+            window.CSS &&
+            window.CSS.supports &&
+            window.CSS.supports("font-weight", "var(--tmp-var)")
+          )),
+          t.parentNode.removeChild(t),
+          e
+        );
+      };
+      supportsCssVars() ||
+        alert(
+          "Please view this demo in a modern browser that supports CSS Variables."
+        );
+    </script>
+    <style type="text/css">
+      body {
+        background: black;
+        --color-text: #fff;
+        --color-link-hover: #fff;
+      }
+      .content {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body class="demo-1">
+    <main>
+      <div class="frame"></div>
+      <div class="content"></div>
+    </main>
+    <script type="x-shader/x-vertex" id="vertexshader">
+      attribute float size;
+      attribute vec3 color;
+      attribute float fade;
+
+      varying vec3 vColor;
+
+      void main() {
+      	vColor = color;
+      	vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      	gl_PointSize = size;
+      	gl_Position = projectionMatrix * mvPosition;
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+      uniform sampler2D pointTexture;
+      varying vec3 vColor;
+      void main() {
+      	gl_FragColor = vec4(vColor, 1.0);
+      	gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
+      }
+    </script>
+    <script src="main.js" type="module"></script>
+  </body>
+</html>
